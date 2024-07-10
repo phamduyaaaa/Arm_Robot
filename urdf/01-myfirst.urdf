@@ -1,0 +1,71 @@
+<?xml version="1.0"?>
+<robot name="robotic_arm" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <!-- Base link -->
+  <link name="base_link">
+    <visual>
+      <geometry>
+        <cylinder length="0.15" radius="0.01"/> <!-- 150 mm height -->
+      </geometry>
+      <origin xyz="0 0 0.075"/> <!-- Half of the height -->
+    </visual>
+  </link>
+
+  <!-- First link -->
+  <link name="link1">
+    <visual>
+      <geometry>
+        <box size="0.1 0.01 0.01"/> <!-- 100 mm length -->
+      </geometry>
+      <origin xyz="0.05 0 0"/> <!-- Half of the length -->
+    </visual>
+  </link>
+  
+  <!-- Joint between base_link and link1 -->
+  <joint name="joint1" type="revolute">
+    <parent link="base_link"/>
+    <child link="link1"/>
+    <origin xyz="0 0 0.15"/> <!-- At the top of base_link -->
+    <axis xyz="0 1 0"/> <!-- Rotates around the Y-axis -->
+    <limit effort="100.0" lower="-3.1415" upper="3.1415" velocity="0.5"/>
+  </joint>
+
+  <!-- Second link -->
+  <link name="link2">
+    <visual>
+      <geometry>
+        <box size="0.1 0.01 0.01"/> <!-- 100 mm length -->
+      </geometry>
+      <origin xyz="0.05 0 0"/> <!-- Half of the length -->
+    </visual>
+  </link>
+  
+  <!-- Joint between link1 and link2 -->
+  <joint name="joint2" type="revolute">
+    <parent link="link1"/>
+    <child link="link2"/>
+    <origin xyz="0.1 0 0"/> <!-- At the end of link1 -->
+    <axis xyz="0 1 0"/> <!-- Rotates around the Y-axis -->
+    <limit effort="100.0" lower="-3.1415" upper="3.1415" velocity="0.5"/>
+  </joint>
+
+  <!-- End-effector link -->
+  <link name="end_effector">
+    <visual>
+      <geometry>
+        <box size="0.1 0.01 0.01"/> <!-- 100x100x100 mm box -->
+      </geometry>
+      <origin xyz="0 0 0"/> <!-- Centered -->
+    </visual>
+  </link>
+  
+  <!-- Prismatic joint between link2 and end_effector -->
+  <joint name="joint3" type="prismatic">
+    <parent link="link2"/>
+    <child link="end_effector"/>
+    <origin xyz="0.1 0 0"/> <!-- At the end of link2 -->
+    <axis xyz="1 0 0"/> <!-- Moves along the Z-axis -->
+    <limit effort="100.0" lower="0.0" upper="0.1" velocity="0.05"/> <!-- 100 mm range -->
+  </joint>
+
+</robot>
